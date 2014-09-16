@@ -30,9 +30,16 @@ abstract class AbstractApiFormat implements ApiFormatInterface
     $output                  = new \stdClass();
     $output->status          = new \stdClass();
     $output->status->code    = $statusCode;
-    $output->status->message = $statusCode;
+    $output->status->message = $statusMessage;
     $output->type            = $type ? $type : get_class($result);
-    $output->result          = $result;
+
+    //Ensure Valid Namespace
+    if(substr($output->type, 0, 1) !== '\\' && stristr($output->type, '\\'))
+    {
+      $output->type = '\\' . $output->type;
+    }
+
+    $output->result = $result;
 
     return $this->getEncoder()->encode($output, '');
   }
