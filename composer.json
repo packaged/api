@@ -9,20 +9,19 @@
     }
   ],
   "require":     {
-    "php":               ">=5.4.0",
-    "guzzlehttp/guzzle": "4.*",
-    "symfony/serializer":"*",
-    "packaged/helpers":  "*",
-    "packaged/docblock": "*",
-    "packaged/config":   "*"
+    "php":                ">=5.4.0",
+    "guzzlehttp/guzzle":  "4.*",
+    "symfony/serializer": "*",
+    "packaged/helpers":   "*",
+    "packaged/docblock":  "*",
+    "packaged/config":    "*"
   },
   "require-dev": {
     "phpunit/phpunit": "4.1"
   },
   "autoload":    {
     "psr-4": {
-      "Packaged\\Api\\":        "src",
-      "Packaged\\ApiExample\\": "example"
+      "Packaged\\Api\\": "src"
     }
   }
 }

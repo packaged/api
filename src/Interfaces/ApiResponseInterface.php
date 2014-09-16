@@ -18,4 +18,11 @@ interface ApiResponseInterface
    * @return ApiResponseInterface|static
    */
   public function setApiCallData(ApiCallData $callData);
+
+  /**
+   * Retrieve the response data as an array
+   *
+   * @return array
+   */
+  public function toArray();
 }

@@ -4,9 +4,12 @@ namespace Packaged\Api\Abstracts;
 use Packaged\Api\Interfaces\ApiRequestInterface;
 use Packaged\Api\Interfaces\ApiResponseInterface;
 use Packaged\Api\Response\ApiCallData;
+use Packaged\Helpers\ValueAs;
 
 abstract class AbstractApiResponse implements ApiResponseInterface
 {
+  protected $_hydratePublic = true;
+
   /**
    * @param ApiRequestInterface $request
    *
@@ -59,6 +62,14 @@ abstract class AbstractApiResponse implements ApiResponseInterface
   public function setApiCallData(ApiCallData $callData)
   {
     $this->_apiCallData = $callData;
+    if($this->_hydratePublic)
+    {
+      $data = $callData->getRawResult();
+      foreach(ValueAs::arr($data) as $key => $value)
+      {
+        $this->$key = $value;
+      }
+    }
   }
 
   public function __call($method, $params)
