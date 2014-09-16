@@ -1,11 +1,11 @@
 <?php
-namespace Packaged\Api;
+namespace Packaged\Api\Abstracts;
 
 use Packaged\Api\Interfaces\ApiRequestInterface;
 use Packaged\Api\Interfaces\ApiResponseInterface;
 use Packaged\Api\Response\ApiCallData;
 
-abstract class ApiResponse implements ApiResponseInterface
+abstract class AbstractApiResponse implements ApiResponseInterface
 {
   /**
    * @param ApiRequestInterface $request
@@ -29,6 +29,16 @@ abstract class ApiResponse implements ApiResponseInterface
       strtolower($property),
       $default
     );
+  }
+
+  /**
+   * Retrieve the response data as an array
+   *
+   * @return array
+   */
+  public function toArray()
+  {
+    return get_public_properties($this);
   }
 
   /**
