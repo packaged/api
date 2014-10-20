@@ -16,9 +16,11 @@ class ResponseBuilder
   {
     $type       = $data->getResponseType();
     $interfaces = class_implements($type);
-    if(in_array('Packaged\Api\Interfaces\ApiExceptionInterface', $interfaces))
+    if($type === '\Packaged\Api\Exceptions\ApiException'
+      || in_array('\Packaged\Api\Exceptions\ApiException', $interfaces)
+    )
     {
-      return new $type($data->getStatusCode(), $data->getStatusMessage());
+      throw new $type($data->getStatusMessage(), $data->getStatusCode());
     }
     else if(in_array(
       'Packaged\Api\Interfaces\ApiResponseInterface',

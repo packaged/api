@@ -73,12 +73,12 @@ abstract class AbstractApiFormat implements ApiFormatInterface
       );
     }
 
-    if(!isset(
-      $result->type,
-      $result->status,
-      $result->status->message,
-      $result->status->code,
-      $result->result)
+    if(
+      !property_exists($result, 'type')
+      || !property_exists($result, 'status')
+      || !property_exists($result, 'result')
+      || !property_exists($result->status, 'message')
+      || !property_exists($result->status, 'code')
     )
     {
       throw new InvalidApiResponseException("Invalid api result", 500);
