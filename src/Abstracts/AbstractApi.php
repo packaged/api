@@ -2,6 +2,7 @@
 namespace Packaged\Api\Abstracts;
 
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\ClientException;
 use Packaged\Api\Format\JsonFormat;
 use Packaged\Api\Interfaces\ApiAwareInterface;
 use Packaged\Api\Interfaces\ApiInterface;
@@ -77,8 +78,15 @@ abstract class AbstractApi extends AbstractDefinable implements ApiInterface
       $options
     );
 
-    $time      = microtime(true);
-    $response  = $client->send($apiRequest);
+    $time = microtime(true);
+    try
+    {
+      $response = $client->send($apiRequest);
+    }
+    catch(ClientException $e)
+    {
+      $response = $e->getResponse();
+    }
     $totalTime = microtime(true) - $time;
 
     $format = new JsonFormat();
