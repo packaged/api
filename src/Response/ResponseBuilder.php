@@ -14,10 +14,19 @@ class ResponseBuilder
    */
   public static function create(ApiCallData $data)
   {
-    $type       = $data->getResponseType();
+    $type = $data->getResponseType();
+
+    if(!class_exists($type))
+    {
+      throw new \Exception(
+        "An type '" . $type . "', class could not be loaded"
+      );
+    }
+
     $interfaces = class_implements($type);
     if($type === '\Packaged\Api\Exceptions\ApiException'
       || in_array('\Packaged\Api\Exceptions\ApiException', $interfaces)
+      || array_key_exists('Exception', class_parents($type))
     )
     {
       throw new $type($data->getStatusMessage(), $data->getStatusCode());
