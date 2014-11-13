@@ -1,6 +1,7 @@
 <?php
 namespace Packaged\Api\Response;
 
+use Packaged\Api\Exceptions\ApiException;
 use Packaged\Api\Interfaces\ApiResponseInterface;
 
 class ResponseBuilder
@@ -24,7 +25,8 @@ class ResponseBuilder
     }
 
     $interfaces = class_implements($type);
-    if($type === '\Packaged\Api\Exceptions\ApiException'
+    if($type == '\Exception'
+      || $type === '\Packaged\Api\Exceptions\ApiException'
       || in_array('\Packaged\Api\Exceptions\ApiException', $interfaces)
       || array_key_exists('Exception', class_parents($type))
     )
@@ -45,7 +47,9 @@ class ResponseBuilder
     }
     else
     {
-      throw new \Exception("An invalid message type was used '" . $type . "'");
+      throw new ApiException(
+        "An invalid message type was used '" . $type . "'"
+      );
     }
   }
 }
