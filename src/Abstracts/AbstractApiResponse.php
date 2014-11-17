@@ -63,7 +63,7 @@ abstract class AbstractApiResponse implements ApiResponseInterface
   {
     $this->_apiCallData = $callData;
     $data               = $callData->getRawResult();
-    $this->_hydrate($data);
+    $this->hydrate($data);
   }
 
   /**
@@ -71,7 +71,7 @@ abstract class AbstractApiResponse implements ApiResponseInterface
    *
    * @param $data
    */
-  protected function _hydrate($data)
+  public function hydrate($data)
   {
     if($data && $this->_hydratePublic)
     {
