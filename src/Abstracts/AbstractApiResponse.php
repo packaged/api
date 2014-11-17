@@ -82,6 +82,20 @@ abstract class AbstractApiResponse implements ApiResponseInterface
     }
   }
 
+  /**
+   * Create a new response object and hydrate with data
+   *
+   * @param $data
+   *
+   * @return static
+   */
+  public static function make($data)
+  {
+    $response = new static;
+    $response->hydrate($data);
+    return $response;
+  }
+
   public function __call($method, $params)
   {
     if(starts_with($method, 'get'))
