@@ -62,10 +62,20 @@ abstract class AbstractApiResponse implements ApiResponseInterface
   public function setApiCallData(ApiCallData $callData)
   {
     $this->_apiCallData = $callData;
-    if($this->_hydratePublic)
+    $data               = $callData->getRawResult();
+    $this->_hydrate($data);
+  }
+
+  /**
+   * Hydrate the public properties
+   *
+   * @param $data
+   */
+  protected function _hydrate($data)
+  {
+    if($data && $this->_hydratePublic)
     {
-      $data = $callData->getRawResult();
-      foreach(ValueAs::arr($data) as $key => $value)
+      foreach($data as $key => $value)
       {
         $this->$key = $value;
       }
