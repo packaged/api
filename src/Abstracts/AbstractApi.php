@@ -62,26 +62,12 @@ abstract class AbstractApi extends AbstractDefinable implements ApiInterface
    */
   public function processRequest(ApiRequestInterface $request)
   {
-    $client  = $this->_getClient();
-    $verb    = $request->getVerb();
-    $options = [];
-
-    if($verb == HttpVerb::POST)
-    {
-      $options['body'] = $request->getPostData();
-    }
-
-    $apiRequest = $client->createRequest(
-      $verb,
-      build_path_unix($this->getUrl(), $request->getPath())
-      . $request->getQueryString(),
-      $options
-    );
+    $apiRequest = $this->_createRequest($request);
 
     $time = microtime(true);
     try
     {
-      $response = $client->send($apiRequest);
+      $response = $this->_getClient()->send($apiRequest);
     }
     catch(ClientException $e)
     {
@@ -91,5 +77,37 @@ abstract class AbstractApi extends AbstractDefinable implements ApiInterface
 
     $format = new JsonFormat();
     return $format->decode($response, number_format($totalTime * 1000, 3));
+  }
+
+  /**
+   * @param ApiRequestInterface $request
+   *
+   * @return \GuzzleHttp\Message\RequestInterface
+   */
+  protected function _createRequest(ApiRequestInterface $request)
+  {
+    return $this->_getClient()->createRequest(
+      $request->getVerb(),
+      build_path_unix($this->getUrl(), $request->getPath())
+      . $request->getQueryString(),
+      $this->_makeOptions($request)
+    );
+  }
+
+  /**
+   * @param ApiRequestInterface $request
+   *
+   * @return array
+   */
+  protected function _makeOptions(ApiRequestInterface $request)
+  {
+    $options = [];
+
+    if($request->getVerb() == HttpVerb::POST)
+    {
+      $options['body'] = $request->getPostData();
+    }
+
+    return $options;
   }
 }
