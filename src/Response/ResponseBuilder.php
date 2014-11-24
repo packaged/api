@@ -20,7 +20,7 @@ class ResponseBuilder
     if(!class_exists($type))
     {
       throw new \Exception(
-        "An type '" . $type . "', class could not be loaded"
+        "Type Class '" . $type . "', could not be loaded"
       );
     }
 
