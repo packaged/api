@@ -73,10 +73,25 @@ abstract class AbstractApi extends AbstractDefinable implements ApiInterface
     {
       $response = $e->getResponse();
     }
+
+    $response = $this->_processResponse($response);
+
     $totalTime = microtime(true) - $time;
 
     $format = new JsonFormat();
     return $format->decode($response, number_format($totalTime * 1000, 3));
+  }
+
+  /**
+   * Process the raw response from api calls
+   *
+   * @param $response
+   *
+   * @return mixed
+   */
+  protected function _processResponse($response)
+  {
+    return $response;
   }
 
   /**
