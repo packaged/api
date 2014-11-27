@@ -4,7 +4,6 @@ namespace Packaged\Api\Abstracts;
 use Packaged\Api\Interfaces\ApiRequestInterface;
 use Packaged\Api\Interfaces\ApiResponseInterface;
 use Packaged\Api\Response\ApiCallData;
-use Packaged\Helpers\ValueAs;
 
 abstract class AbstractApiResponse implements ApiResponseInterface
 {
@@ -75,9 +74,16 @@ abstract class AbstractApiResponse implements ApiResponseInterface
   {
     if($data && $this->_hydratePublic)
     {
-      foreach($data as $key => $value)
+      foreach($this->toArray() as $key => $value)
       {
-        $this->$key = $value;
+        if(is_array($data))
+        {
+          $this->$key = idx($data, $key, $value);
+        }
+        else if(is_object($data))
+        {
+          $this->$key = idp($data, $key, $value);
+        }
       }
     }
   }
