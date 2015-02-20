@@ -31,7 +31,12 @@ class ResponseBuilder
       || array_key_exists('Exception', class_parents($type))
     )
     {
-      throw new $type($data->getStatusMessage(), $data->getStatusCode());
+      $code = $data->getStatusCode();
+      if(!is_numeric($code))
+      {
+        $code = 500;
+      }
+      throw new $type($data->getStatusMessage(), $code);
     }
     else if(in_array(
       'Packaged\Api\Interfaces\ApiResponseInterface',
