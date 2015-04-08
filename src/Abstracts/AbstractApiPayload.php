@@ -13,6 +13,6 @@ class AbstractApiPayload extends AbstractDefinable
    */
   public function toArray()
   {
-    return get_public_properties($this);
+    return json_decode(json_encode(get_public_properties($this)), true);
   }
 }
