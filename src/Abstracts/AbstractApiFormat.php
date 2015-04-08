@@ -27,11 +27,11 @@ abstract class AbstractApiFormat implements ApiFormatInterface
     $result, $statusCode = 200, $statusMessage = '', $type = null
   )
   {
-    $output                  = new \stdClass();
-    $output->status          = new \stdClass();
-    $output->status->code    = $statusCode;
+    $output = new \stdClass();
+    $output->status = new \stdClass();
+    $output->status->code = $statusCode;
     $output->status->message = $statusMessage;
-    $output->type            = $type ? $type : get_class($result);
+    $output->type = $type ? $type : get_class($result);
 
     //Ensure Valid Namespace
     if(substr($output->type, 0, 1) !== '\\' && stristr($output->type, '\\'))
@@ -100,9 +100,9 @@ abstract class AbstractApiFormat implements ApiFormatInterface
         $result->result,
         $result->status->code,
         $result->status->message,
-        (float)$totalTime,
-        (float)$executionTime,
-        (float)$callTime
+        (float)str_replace([',', 'ms'], '', $totalTime),
+        (float)str_replace([',', 'ms'], '', $executionTime),
+        (float)str_replace([',', 'ms'], '', $callTime)
       )
     );
   }
