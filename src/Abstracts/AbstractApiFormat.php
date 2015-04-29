@@ -58,18 +58,21 @@ abstract class AbstractApiFormat implements ApiFormatInterface
       $callTime = $raw->getHeader('X-Call-Time');
     }
 
+    $body = '';
     try
     {
-      $result = $this->getDecoder()->decode(
-        (string)$raw->getBody(),
-        self::FORMAT
-      );
+      $body = (string)$raw->getBody();
+      $result = $this->getDecoder()->decode($body, self::FORMAT);
     }
     catch(\Exception $e)
     {
+      if(!empty($body))
+      {
+        $body = ' (' . $body . ')';
+      }
+      error_log("Invalid API Response: " . $body);
       throw new InvalidApiResponseException(
-        "Unable to decode raw api response",
-        500
+        "Unable to decode raw api response.", 500, $e
       );
     }
 
@@ -81,6 +84,7 @@ abstract class AbstractApiFormat implements ApiFormatInterface
       || !property_exists($result->status, 'code')
     )
     {
+      error_log("Invalid API Result: " . json_encode($result));
       throw new InvalidApiResponseException("Invalid api result", 500);
     }
 
