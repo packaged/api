@@ -2,8 +2,9 @@
 namespace Packaged\Api\Abstracts;
 
 use Packaged\Api\Interfaces\ApiPayloadInterface;
+use Packaged\Api\Validation\PayloadValidator;
 
-class AbstractApiPayload extends AbstractDefinable
+abstract class AbstractApiPayload extends AbstractDefinable
   implements ApiPayloadInterface
 {
   /**
@@ -14,5 +15,10 @@ class AbstractApiPayload extends AbstractDefinable
   public function toArray()
   {
     return json_decode(json_encode(get_public_properties($this)), true);
+  }
+
+  public function validate(array $properties = null)
+  {
+    return (new PayloadValidator($this))->validate($properties);
   }
 }
