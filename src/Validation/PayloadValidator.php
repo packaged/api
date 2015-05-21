@@ -28,7 +28,7 @@ class PayloadValidator
 
     if($properties === null)
     {
-      $properties = get_public_properties($this->_payload);
+      $properties = get_public_properties($this->_payload, true);
     }
 
     $this->_properties = $properties;
@@ -47,9 +47,9 @@ class PayloadValidator
         continue;
       }
 
-      foreach($block->getTags() as $tags)
+      foreach($block->getTags() as $tag => $tags)
       {
-        foreach($tags as $tag => $opt)
+        foreach($tags as $opt)
         {
           if($this->_repair)
           {
