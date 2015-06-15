@@ -9,6 +9,7 @@ use Packaged\Api\Interfaces\ApiInterface;
 use Packaged\Api\Interfaces\ApiRequestInterface;
 use Packaged\Api\Interfaces\EndpointInterface;
 use Packaged\Api\HttpVerb;
+use Packaged\Helpers\Path;
 
 abstract class AbstractApi extends AbstractDefinable implements ApiInterface
 {
@@ -52,7 +53,7 @@ abstract class AbstractApi extends AbstractDefinable implements ApiInterface
    */
   protected function _buildEndpointUrl(EndpointInterface $endpointInterface)
   {
-    return build_path_unix($this->getUrl(), $endpointInterface->getPath());
+    return Path::buildUnix($this->getUrl(), $endpointInterface->getPath());
   }
 
   /**
@@ -103,7 +104,7 @@ abstract class AbstractApi extends AbstractDefinable implements ApiInterface
   {
     return $this->_getClient()->createRequest(
       $request->getVerb(),
-      build_path_unix($this->getUrl(), $request->getPath())
+      Path::buildUnix($this->getUrl(), $request->getPath())
       . $request->getQueryString(),
       $this->_makeOptions($request)
     );

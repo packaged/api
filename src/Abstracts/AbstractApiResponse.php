@@ -4,6 +4,9 @@ namespace Packaged\Api\Abstracts;
 use Packaged\Api\Interfaces\ApiRequestInterface;
 use Packaged\Api\Interfaces\ApiResponseInterface;
 use Packaged\Api\Response\ApiCallData;
+use Packaged\Helpers\Arrays;
+use Packaged\Helpers\Objects;
+use Packaged\Helpers\Strings;
 
 abstract class AbstractApiResponse implements ApiResponseInterface
 {
@@ -26,7 +29,7 @@ abstract class AbstractApiResponse implements ApiResponseInterface
 
   protected function _getProperty($property, $default = null)
   {
-    return idp(
+    return Objects::property(
       $this->_apiCallData->getRawResult(),
       strtolower($property),
       $default
@@ -40,7 +43,7 @@ abstract class AbstractApiResponse implements ApiResponseInterface
    */
   public function toArray()
   {
-    return get_public_properties($this);
+    return Objects::propertyValues($this);
   }
 
   /**
@@ -61,7 +64,7 @@ abstract class AbstractApiResponse implements ApiResponseInterface
   public function setApiCallData(ApiCallData $callData)
   {
     $this->_apiCallData = $callData;
-    $data               = $callData->getRawResult();
+    $data = $callData->getRawResult();
     $this->hydrate($data);
   }
 
@@ -78,11 +81,11 @@ abstract class AbstractApiResponse implements ApiResponseInterface
       {
         if(is_array($data))
         {
-          $this->$key = idx($data, $key, $value);
+          $this->$key = Arrays::value($data, $key, $value);
         }
         else if(is_object($data))
         {
-          $this->$key = idp($data, $key, $value);
+          $this->$key = Objects::property($data, $key, $value);
         }
       }
     }
@@ -104,9 +107,9 @@ abstract class AbstractApiResponse implements ApiResponseInterface
 
   public function __call($method, $params)
   {
-    if(starts_with($method, 'get'))
+    if(Strings::startsWith($method, 'get'))
     {
-      return $this->_getProperty(substr($method, 3), head($params));
+      return $this->_getProperty(substr($method, 3), Arrays::first($params));
     }
     else
     {

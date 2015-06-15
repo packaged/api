@@ -9,4 +9,11 @@ interface EndpointInterface extends DefinableInterface
    * @return string
    */
   public function getBasePath();
+
+  /**
+   * Retrieve the path for the endpoint
+   *
+   * @return string
+   */
+  public function getPath();
 }

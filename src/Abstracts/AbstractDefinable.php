@@ -3,6 +3,7 @@ namespace Packaged\Api\Abstracts;
 
 use Packaged\Api\Interfaces\DefinableInterface;
 use Packaged\DocBlock\DocBlockParser;
+use Packaged\Helpers\Objects;
 use Packaged\Helpers\Strings;
 
 abstract class AbstractDefinable implements DefinableInterface
@@ -14,7 +15,7 @@ abstract class AbstractDefinable implements DefinableInterface
    */
   public function getName()
   {
-    return Strings::titleize(class_shortname(get_called_class()));
+    return Strings::titleize(Objects::classShortname(get_called_class()));
   }
 
   /**

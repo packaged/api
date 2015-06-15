@@ -4,6 +4,8 @@ namespace Packaged\Api\Validation;
 use Packaged\Api\Abstracts\AbstractApiPayload;
 use Packaged\Api\Exceptions\PayloadValidationError AS PVE;
 use Packaged\DocBlock\DocBlockParser;
+use Packaged\Helpers\Numbers;
+use Packaged\Helpers\Objects;
 use Packaged\Helpers\ValueAs;
 
 class PayloadValidator
@@ -28,7 +30,7 @@ class PayloadValidator
 
     if($properties === null)
     {
-      $properties = get_public_properties($this->_payload, true);
+      $properties = Objects::properties($this->_payload);
     }
 
     $this->_properties = $properties;
@@ -140,7 +142,7 @@ class PayloadValidator
         break;
       case 'length':
         list($low, $high) = explode(' ', $options, 2);
-        if(!between($value, (int)$low, (int)$high))
+        if(!Numbers::between($value, (int)$low, (int)$high))
         {
           $msg = "is not between " . (int)$low . ' and ' . (int)$high;
         }
@@ -178,7 +180,7 @@ class PayloadValidator
         }
         break;
       case 'percent':
-        if(between($value, 0, 100))
+        if(Numbers::between($value, 0, 100))
         {
           $msg = 'is not a valid percentage';
         }

@@ -12,7 +12,7 @@
     "php": ">=5.4.0",
     "guzzlehttp/guzzle": ">= 4.1 < 6",
     "symfony/serializer": "~2.4",
-    "packaged/helpers": "~0",
+    "packaged/helpers": "~1.0",
     "packaged/docblock": "~0",
     "packaged/config": "~1.0"
   },

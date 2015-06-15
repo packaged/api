@@ -8,6 +8,8 @@ use Packaged\Api\ApiRequest;
 use Packaged\Api\Interfaces\EndpointInterface;
 use Packaged\Api\HttpVerb;
 use Packaged\Api\Traits\ApiAwareTrait;
+use Packaged\Helpers\Objects;
+use Packaged\Helpers\Path;
 
 abstract class AbstractEndpoint extends AbstractDefinable
   implements EndpointInterface, ApiAwareInterface
@@ -27,7 +29,7 @@ abstract class AbstractEndpoint extends AbstractDefinable
   {
     $args = func_get_args();
     array_shift($args);
-    $new = newv(get_called_class(), $args);
+    $new = Objects::create(get_called_class(), $args);
     /**
      * @var $new ApiAwareInterface
      */
@@ -86,7 +88,7 @@ abstract class AbstractEndpoint extends AbstractDefinable
     }
     else if(substr($path, 0, 1) !== '/')
     {
-      $path = build_path_unix($this->_path, $path);
+      $path = Path::buildUnix($this->_path, $path);
     }
 
     $path = $this->_buildPath($path, $payload);
