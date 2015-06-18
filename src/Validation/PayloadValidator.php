@@ -142,7 +142,14 @@ class PayloadValidator
         break;
       case 'length':
         list($low, $high) = explode(' ', $options, 2);
-        if(!Numbers::between($value, (int)$low, (int)$high))
+        if(!Numbers::between(strlen($value), (int)$low, (int)$high))
+        {
+          $msg = "is not between " . (int)$low . ' and ' . (int)$high;
+        }
+        break;
+      case 'between':
+        list($low, $high) = explode(' ', $options, 2);
+        if(!Numbers::between((int)$value, (int)$low, (int)$high))
         {
           $msg = "is not between " . (int)$low . ' and ' . (int)$high;
         }
