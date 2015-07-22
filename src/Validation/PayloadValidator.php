@@ -2,7 +2,7 @@
 namespace Packaged\Api\Validation;
 
 use Packaged\Api\Abstracts\AbstractApiPayload;
-use Packaged\Api\Exceptions\PayloadValidationError AS PVE;
+use Packaged\Api\Exceptions\PayloadValidationException as PVE;
 use Packaged\DocBlock\DocBlockParser;
 use Packaged\Helpers\Numbers;
 use Packaged\Helpers\Objects;
@@ -116,6 +116,12 @@ class PayloadValidator
     $msg = null;
     switch(strtolower($tag))
     {
+      case 'required':
+        if(empty($value))
+        {
+          $msg = "is required";
+        }
+        break;
       case 'bool':
         if(!is_bool($value))
         {

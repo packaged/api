@@ -21,7 +21,8 @@
   },
   "autoload": {
     "psr-4": {
-      "Packaged\\Api\\": "src"
+      "Packaged\\Api\\": "src",
+      "Packaged\\Api\\Tests\\": "tests"
     }
   }
 }
