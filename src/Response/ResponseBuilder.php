@@ -38,7 +38,11 @@ class ResponseBuilder
         $code = 500;
       }
       $exception = new $type($data->getStatusMessage(), $code);
-      Objects::hydrate($exception, $data->getRawResult());
+      $rawData = $data->getRawResult();
+      if(is_object($rawData))
+      {
+        Objects::hydrate($exception, $rawData);
+      }
       throw $exception;
     }
     else if(in_array(
