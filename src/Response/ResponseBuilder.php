@@ -3,6 +3,7 @@ namespace Packaged\Api\Response;
 
 use Packaged\Api\Exceptions\ApiException;
 use Packaged\Api\Interfaces\ApiResponseInterface;
+use Packaged\Helpers\Objects;
 
 class ResponseBuilder
 {
@@ -36,7 +37,9 @@ class ResponseBuilder
       {
         $code = 500;
       }
-      throw new $type($data->getStatusMessage(), $code);
+      $exception = new $type($data->getStatusMessage(), $code);
+      Objects::hydrate($exception, $data->getRawResult());
+      throw $exception;
     }
     else if(in_array(
       'Packaged\Api\Interfaces\ApiResponseInterface',

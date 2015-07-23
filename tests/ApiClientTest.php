@@ -132,19 +132,15 @@ class ApiClientTest extends \PHPUnit_Framework_TestCase
     $request->get();
   }
 
-  /**
-   * @expectedException \Packaged\Api\Tests\Support\MockException
-   * @expectedExceptionMessage Oops
-   * @expectedExceptionCode    1050
-   */
   public function testException()
   {
+    $toThrow = new MockException('Oops', 1050);
+    $toThrow->errorValue = 'test value';
     $endpoint = $this->_getEndpoint(
-      function ()
+      function () use ($toThrow)
       {
-        $e = new MockException('Oops', 1050);
         return [
-          'body'   => $e->getFormatted(new JsonFormat()),
+          'body'   => $toThrow->getFormatted(new JsonFormat()),
           'status' => 200
         ];
       }
@@ -152,6 +148,14 @@ class ApiClientTest extends \PHPUnit_Framework_TestCase
     $payload = new MockPayload();
     $payload->key1 = 'value';
     $payload->key2 = 'vals';
-    $endpoint->getRequest($payload, '/', HttpVerb::POST)->get();
+    $e = null;
+    try
+    {
+      $endpoint->getRequest($payload, '/', HttpVerb::POST)->get();
+    }
+    catch(\Exception $e)
+    {
+    }
+    $this->assertEquals($toThrow, $e);
   }
 }

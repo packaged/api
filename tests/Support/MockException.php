@@ -5,5 +5,5 @@ use Packaged\Api\Exceptions\ApiException;
 
 class MockException extends ApiException
 {
-
+  public $errorValue;
 }
