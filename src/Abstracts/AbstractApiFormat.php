@@ -34,7 +34,7 @@ abstract class AbstractApiFormat implements ApiFormatInterface
     $output->type = $type ? $type : get_class($result);
 
     //Ensure Valid Namespace
-    if(substr($output->type, 0, 1) !== '\\' && stristr($output->type, '\\'))
+    if(substr($output->type, 0, 1) !== '\\')
     {
       $output->type = '\\' . $output->type;
     }
