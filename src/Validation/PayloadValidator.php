@@ -150,7 +150,7 @@ class PayloadValidator
         list($low, $high) = explode(' ', $options, 2);
         if(!Numbers::between(strlen($value), (int)$low, (int)$high))
         {
-          $msg = "is not between " . (int)$low . ' and ' . (int)$high;
+          $msg = "is not between " . (int)$low . ' and ' . (int)$high . ' characters';
         }
         break;
       case 'between':
@@ -196,6 +196,34 @@ class PayloadValidator
         if(Numbers::between($value, 0, 100))
         {
           $msg = 'is not a valid percentage';
+        }
+        break;
+      case 'lessthan':
+      case 'lt':
+        if((int)$value >= (int)$options)
+        {
+          $msg = 'is not less than ' . (int)$options;
+        }
+        break;
+      case 'lessthanequal':
+      case 'lte':
+        if((int)$value > (int)$options)
+        {
+          $msg = 'is not less than or equal to ' . (int)$options;
+        }
+        break;
+      case 'greaterthan':
+      case 'gt':
+        if((int)$value <= (int)$options)
+        {
+          $msg = 'is not greater than ' . (int)$options;
+        }
+        break;
+      case 'greaterthanequal':
+      case 'gte':
+        if((int)$value < (int)$options)
+        {
+          $msg = 'is not greater than or equal to ' . (int)$options;
         }
         break;
     }
