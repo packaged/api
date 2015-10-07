@@ -108,7 +108,11 @@ abstract class AbstractEndpoint extends AbstractDefinable
     }
     else
     {
-      $request = ApiRequest::create(HttpVerb::POST, $path, $payload->toArray());
+      $request = ApiRequest::create(
+        $verb ?: HttpVerb::POST,
+        $path,
+        $payload->toArray()
+      );
     }
     $request->setApi($this->getApi());
     return $request;
