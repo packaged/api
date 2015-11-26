@@ -19,9 +19,25 @@ abstract class AbstractApiFormat implements ApiFormatInterface
   abstract protected function getEncoder();
 
   /**
+   * @return array
+   */
+  protected function _getEncodeContext()
+  {
+    return [];
+  }
+
+  /**
    * @return DecoderInterface
    */
   abstract protected function getDecoder();
+
+  /**
+   * @return array
+   */
+  protected function _getDecodeContext()
+  {
+    return [];
+  }
 
   public function encode(
     $result, $statusCode = 200, $statusMessage = '', $type = null
@@ -41,7 +57,11 @@ abstract class AbstractApiFormat implements ApiFormatInterface
 
     $output->result = $result;
 
-    return $this->getEncoder()->encode($output, '');
+    return $this->getEncoder()->encode(
+      $output,
+      self::FORMAT,
+      $this->_getEncodeContext()
+    );
   }
 
   public function decode(ResponseInterface $raw, $totalTime = 0)
@@ -62,7 +82,11 @@ abstract class AbstractApiFormat implements ApiFormatInterface
     try
     {
       $body = (string)$raw->getBody();
-      $result = $this->getDecoder()->decode($body, self::FORMAT);
+      $result = $this->getDecoder()->decode(
+        $body,
+        self::FORMAT,
+        $this->_getDecodeContext()
+      );
     }
     catch(\Exception $e)
     {
