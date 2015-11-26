@@ -16,7 +16,7 @@ abstract class AbstractApiFormat implements ApiFormatInterface
   /**
    * @return EncoderInterface
    */
-  abstract protected function getEncoder();
+  abstract protected function _getEncoder();
 
   /**
    * @return array
@@ -29,7 +29,7 @@ abstract class AbstractApiFormat implements ApiFormatInterface
   /**
    * @return DecoderInterface
    */
-  abstract protected function getDecoder();
+  abstract protected function _getDecoder();
 
   /**
    * @return array
@@ -57,7 +57,7 @@ abstract class AbstractApiFormat implements ApiFormatInterface
 
     $output->result = $result;
 
-    return $this->getEncoder()->encode(
+    return $this->_getEncoder()->encode(
       $output,
       self::FORMAT,
       $this->_getEncodeContext()
@@ -82,7 +82,7 @@ abstract class AbstractApiFormat implements ApiFormatInterface
     try
     {
       $body = (string)$raw->getBody();
-      $result = $this->getDecoder()->decode(
+      $result = $this->_getDecoder()->decode(
         $body,
         self::FORMAT,
         $this->_getDecodeContext()

@@ -9,12 +9,12 @@ class JsonFormat extends AbstractApiFormat
 {
   const FORMAT = 'json';
 
-  public function getEncoder()
+  public function _getEncoder()
   {
     return new JsonEncode();
   }
 
-  public function getDecoder()
+  public function _getDecoder()
   {
     return new JsonDecode();
   }

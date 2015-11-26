@@ -8,12 +8,12 @@ class XmlFormat extends AbstractApiFormat
 {
   const FORMAT = 'xml';
 
-  public function getEncoder()
+  public function _getEncoder()
   {
     return new XmlEncoder();
   }
 
-  public function getDecoder()
+  public function _getDecoder()
   {
     return new XmlEncoder();
   }
