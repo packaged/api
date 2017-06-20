@@ -25,11 +25,25 @@ abstract class AbstractApiPayload extends AbstractDefinable
     return (new PayloadValidator($this))->validate($properties);
   }
 
-  public function hydrate(array $params)
+  /**
+   * @param array|object $source
+   *
+   * @return $this
+   */
+  public function hydrate($source)
   {
+    if(is_object($source))
+    {
+      $source = Objects::propertyValues($source);
+    }
+    else
+    {
+      $source = (array)$source;
+    }
     foreach(Objects::propertyValues($this) as $key => $value)
     {
-      $this->$key = Arrays::value($params, $key, $value);
+      $this->$key = Arrays::value($source, $key, $value);
     }
+    return $this;
   }
 }
