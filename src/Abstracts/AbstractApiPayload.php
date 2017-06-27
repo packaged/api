@@ -36,13 +36,12 @@ abstract class AbstractApiPayload extends AbstractDefinable
     {
       $source = Objects::propertyValues($source);
     }
-    else
+    if(is_array($source))
     {
-      $source = (array)$source;
-    }
-    foreach(Objects::propertyValues($this) as $key => $value)
-    {
-      $this->$key = Arrays::value($source, $key, $value);
+      foreach(Objects::propertyValues($this) as $key => $value)
+      {
+        $this->$key = Arrays::value($source, $key, $value);
+      }
     }
     return $this;
   }
