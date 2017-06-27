@@ -38,7 +38,7 @@ abstract class AbstractApiPayload extends AbstractDefinable
     }
     if(is_array($source))
     {
-      foreach($this as $key => $value)
+      foreach($source as $key => $value)
       {
         $this->$key = Arrays::value($source, $key, $value);
       }
