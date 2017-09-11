@@ -26,9 +26,9 @@ class ResponseBuilder
     }
 
     $interfaces = class_implements($type);
-    if($type == '\Exception'
-      || $type === '\Packaged\Api\Exceptions\ApiException'
-      || in_array('\Packaged\Api\Exceptions\ApiException', $interfaces)
+    if($type == \Exception::class
+      || $type === ApiException::class
+      || in_array(ApiException::class, $interfaces)
       || array_key_exists('Exception', class_parents($type))
     )
     {
@@ -45,12 +45,9 @@ class ResponseBuilder
       }
       throw $exception;
     }
-    else if(in_array(
-      'Packaged\Api\Interfaces\ApiResponseInterface',
-      $interfaces
-    ))
+    else if(in_array(ApiResponseInterface::class, $interfaces))
     {
-      $class = new $type;
+      $class = new $type();
       /**
        * @var $class \Packaged\Api\Interfaces\ApiResponseInterface
        */

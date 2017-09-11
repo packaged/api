@@ -9,16 +9,15 @@
     }
   ],
   "require": {
-    "php": ">=5.4.0",
-    "guzzlehttp/guzzle": ">= 4.1 < 6",
-    "symfony/serializer": "~2.1",
+    "php": ">=7.0",
+    "guzzlehttp/guzzle": "~6.3",
+    "symfony/serializer": "~3.3",
     "packaged/helpers": "~1.0",
     "packaged/docblock": "~0",
     "packaged/config": "~1.0"
   },
   "require-dev": {
-    "phpunit/phpunit": "~4.5",
-    "satooshi/php-coveralls": "~1.0"
+    "phpunit/phpunit": "~6.3"
   },
   "autoload": {
     "psr-4": {

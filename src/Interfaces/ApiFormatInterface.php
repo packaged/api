@@ -1,7 +1,7 @@
 <?php
 namespace Packaged\Api\Interfaces;
 
-use GuzzleHttp\Message\ResponseInterface;
+use Psr\Http\Message\ResponseInterface;
 
 interface ApiFormatInterface
 {

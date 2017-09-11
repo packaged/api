@@ -1,12 +1,12 @@
 <?php
 namespace Packaged\Api\Abstracts;
 
+use Packaged\Api\ApiRequest;
+use Packaged\Api\HttpVerb;
 use Packaged\Api\Interfaces\ApiAwareInterface;
 use Packaged\Api\Interfaces\ApiInterface;
 use Packaged\Api\Interfaces\ApiPayloadInterface;
-use Packaged\Api\ApiRequest;
 use Packaged\Api\Interfaces\EndpointInterface;
-use Packaged\Api\HttpVerb;
 use Packaged\Api\Traits\ApiAwareTrait;
 use Packaged\Helpers\Objects;
 use Packaged\Helpers\Path;
@@ -60,10 +60,7 @@ abstract class AbstractEndpoint extends AbstractDefinable
     if(stristr($path, ':') && $payload !== null)
     {
       $find = array_map(
-        function ($value)
-        {
-          return ':' . $value;
-        },
+        function ($value) { return ':' . $value; },
         array_keys($payload->toArray())
       );
       return str_replace($find, $payload->toArray(), $path);

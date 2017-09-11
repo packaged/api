@@ -2,8 +2,9 @@
 namespace Packaged\Api\Tests;
 
 use Packaged\Api\Tests\Support\MockPayload;
+use PHPUnit\Framework\TestCase;
 
-class ValidationTest extends \PHPUnit_Framework_TestCase
+class ValidationTest extends TestCase
 {
   /**
    * @expectedException \Packaged\Api\Exceptions\PayloadValidationException

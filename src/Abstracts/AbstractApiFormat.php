@@ -1,11 +1,11 @@
 <?php
 namespace Packaged\Api\Abstracts;
 
-use GuzzleHttp\Message\ResponseInterface;
 use Packaged\Api\Exceptions\InvalidApiResponseException;
 use Packaged\Api\Interfaces\ApiFormatInterface;
 use Packaged\Api\Response\ApiCallData;
 use Packaged\Api\Response\ResponseBuilder;
+use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\Serializer\Encoder\DecoderInterface;
 use Symfony\Component\Serializer\Encoder\EncoderInterface;
 

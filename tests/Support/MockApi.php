@@ -1,16 +1,33 @@
 <?php
 namespace Packaged\Api\Tests\Support;
 
+use GuzzleHttp\Client;
 use Packaged\Api\Abstracts\AbstractApi;
 
 class MockApi extends AbstractApi
 {
   protected $_url;
+  protected $_guzzleConfig = [];
 
   function __construct($url, array $guzzleConfig = [])
   {
     $this->_url = $url;
     $this->_guzzleConfig = $guzzleConfig;
+  }
+
+  /**
+   * Retrieve the Guzzle HTTP Client
+   *
+   * @return Client
+   */
+  protected function _getClient()
+  {
+    if($this->_client === null)
+    {
+      $this->_client = new Client($this->_guzzleConfig);
+    }
+
+    return $this->_client;
   }
 
   /**

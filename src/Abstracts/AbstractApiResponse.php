@@ -100,7 +100,7 @@ abstract class AbstractApiResponse implements ApiResponseInterface
    */
   public static function make($data)
   {
-    $response = new static;
+    $response = new static();
     $response->hydrate($data);
     return $response;
   }

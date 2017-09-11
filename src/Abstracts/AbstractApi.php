@@ -3,18 +3,18 @@ namespace Packaged\Api\Abstracts;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
+use GuzzleHttp\Promise\PromiseInterface;
 use Packaged\Api\Format\JsonFormat;
+use Packaged\Api\HttpVerb;
 use Packaged\Api\Interfaces\ApiAwareInterface;
 use Packaged\Api\Interfaces\ApiInterface;
 use Packaged\Api\Interfaces\ApiRequestInterface;
 use Packaged\Api\Interfaces\EndpointInterface;
-use Packaged\Api\HttpVerb;
 use Packaged\Helpers\Path;
 
 abstract class AbstractApi extends AbstractDefinable implements ApiInterface
 {
   protected $_client;
-  protected $_guzzleConfig = [];
 
   /**
    * Bind this API to an instance
@@ -38,7 +38,7 @@ abstract class AbstractApi extends AbstractDefinable implements ApiInterface
   {
     if($this->_client === null)
     {
-      $this->_client = new Client($this->_guzzleConfig);
+      $this->_client = new Client();
     }
 
     return $this->_client;
@@ -68,7 +68,7 @@ abstract class AbstractApi extends AbstractDefinable implements ApiInterface
     $time = microtime(true);
     try
     {
-      $response = $this->_getClient()->send($apiRequest);
+      $response = $apiRequest->wait();
     }
     catch(ClientException $e)
     {
@@ -98,11 +98,11 @@ abstract class AbstractApi extends AbstractDefinable implements ApiInterface
   /**
    * @param ApiRequestInterface $request
    *
-   * @return \GuzzleHttp\Message\RequestInterface
+   * @return PromiseInterface
    */
   protected function _createRequest(ApiRequestInterface $request)
   {
-    return $this->_getClient()->createRequest(
+    return $this->_getClient()->requestAsync(
       $request->getVerb(),
       Path::buildUnix($this->getUrl(), $request->getPath())
       . $request->getQueryString(),
@@ -121,7 +121,7 @@ abstract class AbstractApi extends AbstractDefinable implements ApiInterface
 
     if($request->getVerb() == HttpVerb::POST)
     {
-      $options['body'] = $request->getPostData();
+      $options['form_params'] = $request->getPostData();
     }
 
     return $options;
