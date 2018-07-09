@@ -1,6 +1,8 @@
 <?php
 namespace Packaged\Api\Interfaces;
 
+use GuzzleHttp\Promise\PromiseInterface;
+
 interface ApiInterface extends DefinableInterface
 {
   /**
@@ -16,6 +18,20 @@ interface ApiInterface extends DefinableInterface
    * @return \Packaged\Api\Interfaces\ApiResponseInterface
    */
   public function processRequest(ApiRequestInterface $request);
+
+  /**
+   * @param \Packaged\Api\Interfaces\ApiRequestInterface $request
+   *
+   * @return PromiseInterface
+   */
+  public function prepareRequest(ApiRequestInterface $request);
+
+  /**
+   * @param PromiseInterface $apiRequest
+   *
+   * @return \Packaged\Api\Interfaces\ApiResponseInterface
+   */
+  public function processPreparedRequest(PromiseInterface $apiRequest);
 
   /**
    * Bind this API to an instance

@@ -1,6 +1,7 @@
 <?php
 namespace Packaged\Api;
 
+use GuzzleHttp\Promise\PromiseInterface;
 use Packaged\Api\Interfaces\ApiRequestInterface;
 use Packaged\Api\Traits\ApiAwareTrait;
 
@@ -12,6 +13,9 @@ class ApiRequest implements ApiRequestInterface
   protected $_querystring;
   protected $_requiresAuth = true;
   protected $_batchId;
+  /** @var PromiseInterface */
+  protected $_promise;
+  protected $_response;
 
   use ApiAwareTrait;
 
@@ -20,7 +24,23 @@ class ApiRequest implements ApiRequestInterface
    */
   public function get()
   {
-    return $this->getApi()->processRequest($this);
+    $this->_response = $this->getApi()->processRequest($this);
+    return $this->_response;
+  }
+
+  public function request()
+  {
+    $this->_promise = $this->getApi()->prepareRequest($this);
+    return $this;
+  }
+
+  public function getResponse()
+  {
+    if(!$this->_response && $this->_promise)
+    {
+      $this->_response = $this->getApi()->processPreparedRequest($this->_promise);
+    }
+    return $this->_response;
   }
 
   public function setBatchId($batchId)
@@ -48,11 +68,11 @@ class ApiRequest implements ApiRequestInterface
     $requiresAuth = true
   )
   {
-    $request                = new static;
-    $request->_verb         = $verb;
-    $request->_path         = $path;
-    $request->_post         = $postData;
-    $request->_querystring  = $querystring;
+    $request = new static();
+    $request->_verb = $verb;
+    $request->_path = $path;
+    $request->_post = $postData;
+    $request->_querystring = $querystring;
     $request->_requiresAuth = $requiresAuth;
     return $request;
   }

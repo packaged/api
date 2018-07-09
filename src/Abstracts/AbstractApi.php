@@ -60,11 +60,32 @@ abstract class AbstractApi extends AbstractDefinable implements ApiInterface
    * @param \Packaged\Api\Interfaces\ApiRequestInterface $request
    *
    * @return \Packaged\Api\Interfaces\ApiResponseInterface
+   *
+   * @throws \Packaged\Api\Exceptions\InvalidApiResponseException
    */
   public function processRequest(ApiRequestInterface $request)
   {
-    $apiRequest = $this->_createRequest($request);
+    return $this->processPreparedRequest($this->prepareRequest($request));
+  }
 
+  /**
+   * @param ApiRequestInterface $request
+   *
+   * @return PromiseInterface
+   */
+  public function prepareRequest(ApiRequestInterface $request)
+  {
+    return $this->_createRequest($request);
+  }
+
+  /**
+   * @param PromiseInterface $apiRequest
+   *
+   * @return \Packaged\Api\Interfaces\ApiResponseInterface
+   * @throws \Packaged\Api\Exceptions\InvalidApiResponseException
+   */
+  public function processPreparedRequest(PromiseInterface $apiRequest)
+  {
     $time = microtime(true);
     try
     {
