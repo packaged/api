@@ -125,8 +125,7 @@ abstract class AbstractApi extends AbstractDefinable implements ApiInterface
   {
     $promise = $this->_getClient()->requestAsync(
       $request->getVerb(),
-      Path::buildUnix($this->getUrl(), $request->getPath())
-      . $request->getQueryString(),
+      Path::buildUnix($this->getUrl(), $request->getPath()) . $request->getQueryString(),
       $this->_makeOptions($request)
     );
     $request->setPromise($promise);
