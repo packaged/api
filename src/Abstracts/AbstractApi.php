@@ -123,12 +123,14 @@ abstract class AbstractApi extends AbstractDefinable implements ApiInterface
    */
   protected function _createRequest(ApiRequestInterface $request)
   {
-    return $this->_getClient()->requestAsync(
+    $promise = $this->_getClient()->requestAsync(
       $request->getVerb(),
       Path::buildUnix($this->getUrl(), $request->getPath())
       . $request->getQueryString(),
       $this->_makeOptions($request)
     );
+    $request->setPromise($promise);
+    return $promise;
   }
 
   /**

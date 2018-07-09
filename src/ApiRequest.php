@@ -24,34 +24,35 @@ class ApiRequest implements ApiRequestInterface
    */
   public function get()
   {
-    $this->_response = $this->getApi()->processRequest($this);
-    return $this->_response;
-  }
-
-  public function request()
-  {
-    $this->_promise = $this->getApi()->prepareRequest($this);
-    return $this;
-  }
-
-  public function getResponse()
-  {
-    if(!$this->_response && $this->_promise)
+    if(!$this->_response)
     {
-      $this->_response = $this->getApi()->processPreparedRequest($this->_promise);
+      if($this->_promise)
+      {
+        $this->_response = $this->getApi()->processPreparedRequest($this->_promise);
+      }
+      else
+      {
+        $this->_response = $this->getApi()->processRequest($this);
+      }
     }
     return $this->_response;
   }
 
-  public function setBatchId($batchId)
+  /**
+   * @param PromiseInterface $promise
+   *
+   * @return $this
+   */
+  public function setPromise(PromiseInterface $promise)
   {
-    $this->_batchId = $batchId;
+    $this->_promise = $promise;
     return $this;
   }
 
-  public function getBatchId()
+  public function prepareRequest()
   {
-    return $this->_batchId;
+    $this->setPromise($this->getApi()->prepareRequest($this));
+    return $this;
   }
 
   /**
@@ -64,8 +65,7 @@ class ApiRequest implements ApiRequestInterface
    * @return static
    */
   public static function create(
-    $verb = HttpVerb::POST, $path = '/', $postData = [], $querystring = '',
-    $requiresAuth = true
+    $verb = HttpVerb::POST, $path = '/', $postData = [], $querystring = '', $requiresAuth = true
   )
   {
     $request = new static();

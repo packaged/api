@@ -59,10 +59,7 @@ abstract class AbstractEndpoint extends AbstractDefinable
   {
     if(stristr($path, ':') && $payload !== null)
     {
-      $find = array_map(
-        function ($value) { return ':' . $value; },
-        array_keys($payload->toArray())
-      );
+      $find = array_map(function ($value) { return ':' . $value; }, array_keys($payload->toArray()));
       return str_replace($find, $payload->toArray(), $path);
     }
     return $path;
@@ -75,9 +72,7 @@ abstract class AbstractEndpoint extends AbstractDefinable
    *
    * @return ApiRequest
    */
-  protected function _createRequest(
-    ApiPayloadInterface $payload = null, $path = null, $verb = null
-  )
+  protected function _createRequest(ApiPayloadInterface $payload = null, $path = null, $verb = null)
   {
     if($path === null)
     {
@@ -96,22 +91,14 @@ abstract class AbstractEndpoint extends AbstractDefinable
     }
     else if($verb === HttpVerb::GET)
     {
-      $request = ApiRequest::create(
-        HttpVerb::GET,
-        $path,
-        [],
-        $payload->toArray()
-      );
+      $request = ApiRequest::create(HttpVerb::GET, $path, [], $payload->toArray());
     }
     else
     {
-      $request = ApiRequest::create(
-        $verb ?: HttpVerb::POST,
-        $path,
-        $payload->toArray()
-      );
+      $request = ApiRequest::create($verb ?: HttpVerb::POST, $path, $payload->toArray());
     }
     $request->setApi($this->getApi());
+    $this->getApi()->prepareRequest($request);
     return $request;
   }
 }

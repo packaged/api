@@ -1,6 +1,8 @@
 <?php
 namespace Packaged\Api\Interfaces;
 
+use GuzzleHttp\Promise\PromiseInterface;
+
 interface ApiRequestInterface extends ApiAwareInterface
 {
   const HTTP_GET = 'get';
@@ -20,4 +22,6 @@ interface ApiRequestInterface extends ApiAwareInterface
   public function getPostData();
 
   public function getQueryString();
+
+  public function setPromise(PromiseInterface $promise);
 }
