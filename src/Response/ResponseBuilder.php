@@ -20,9 +20,7 @@ class ResponseBuilder
 
     if(!class_exists($type))
     {
-      throw new \Exception(
-        "Type Class '" . $type . "', could not be loaded"
-      );
+      throw new \Exception("Type Class '" . $type . "', could not be loaded");
     }
 
     $interfaces = class_implements($type);
@@ -56,9 +54,7 @@ class ResponseBuilder
     }
     else
     {
-      throw new ApiException(
-        "An invalid message type was used '" . $type . "'"
-      );
+      throw new ApiException("An invalid message type was used '" . $type . "'");
     }
   }
 }

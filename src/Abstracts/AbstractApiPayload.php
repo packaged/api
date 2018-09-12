@@ -7,8 +7,7 @@ use Packaged\Helpers\ArrayHelper;
 use Packaged\Helpers\Arrays;
 use Packaged\Helpers\Objects;
 
-abstract class AbstractApiPayload extends AbstractDefinable
-  implements ApiPayloadInterface
+abstract class AbstractApiPayload extends AbstractDefinable implements ApiPayloadInterface
 {
   /**
    * Retrieve the request data as an array

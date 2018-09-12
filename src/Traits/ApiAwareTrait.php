@@ -34,9 +34,7 @@ trait ApiAwareTrait
   {
     if($this->_api === null)
     {
-      throw new \RuntimeException(
-        "No API has been bound to " . get_called_class()
-      );
+      throw new \RuntimeException("No API has been bound to " . get_called_class());
     }
     return $this->_api;
   }

@@ -39,9 +39,7 @@ abstract class AbstractApiFormat implements ApiFormatInterface
     return [];
   }
 
-  public function encode(
-    $result, $statusCode = 200, $statusMessage = '', $type = null
-  )
+  public function encode($result, $statusCode = 200, $statusMessage = '', $type = null)
   {
     $output = new \stdClass();
     $output->status = new \stdClass();
@@ -57,11 +55,7 @@ abstract class AbstractApiFormat implements ApiFormatInterface
 
     $output->result = $result;
 
-    return $this->_getEncoder()->encode(
-      $output,
-      self::FORMAT,
-      $this->_getEncodeContext()
-    );
+    return $this->_getEncoder()->encode($output, self::FORMAT, $this->_getEncodeContext());
   }
 
   public function decode(ResponseInterface $raw, $totalTime = 0)
@@ -82,11 +76,7 @@ abstract class AbstractApiFormat implements ApiFormatInterface
     try
     {
       $body = (string)$raw->getBody();
-      $result = $this->_getDecoder()->decode(
-        $body,
-        self::FORMAT,
-        $this->_getDecodeContext()
-      );
+      $result = $this->_getDecoder()->decode($body, self::FORMAT, $this->_getDecodeContext());
     }
     catch(\Exception $e)
     {
@@ -95,22 +85,10 @@ abstract class AbstractApiFormat implements ApiFormatInterface
         $body = ' (' . $body . ')';
       }
       error_log("Invalid API Response: " . $body);
-      throw new InvalidApiResponseException(
-        "Unable to decode raw api response.", 500, $e
-      );
+      throw new InvalidApiResponseException("Unable to decode raw api response.", 500, $e);
     }
 
-    if(
-      !property_exists($result, 'type')
-      || !property_exists($result, 'status')
-      || !property_exists($result, 'result')
-      || !property_exists($result->status, 'message')
-      || !property_exists($result->status, 'code')
-    )
-    {
-      error_log("Invalid API Result: " . json_encode($result));
-      throw new InvalidApiResponseException("Invalid api result", 500);
-    }
+    $this->_validateResult($result);
 
     if($executionTime === 0)
     {
@@ -122,7 +100,7 @@ abstract class AbstractApiFormat implements ApiFormatInterface
       $callTime = $executionTime;
     }
 
-    return ResponseBuilder::create(
+    return $this->_buildFromCallData(
       ApiCallData::create(
         $result->type,
         $result->result,
@@ -133,5 +111,26 @@ abstract class AbstractApiFormat implements ApiFormatInterface
         (float)str_replace([',', 'ms'], '', $callTime)
       )
     );
+  }
+
+  protected function _validateResult($result)
+  {
+    if(
+      !property_exists($result, 'type')
+      || !property_exists($result, 'status')
+      || !property_exists($result, 'result')
+      || !property_exists($result->status, 'message')
+      || !property_exists($result->status, 'code')
+    )
+    {
+      error_log("Invalid API Result: " . json_encode($result));
+      throw new InvalidApiResponseException("Invalid api result", 500);
+    }
+    return true;
+  }
+
+  protected function _buildFromCallData(ApiCallData $callData)
+  {
+    return ResponseBuilder::create($callData);
   }
 }

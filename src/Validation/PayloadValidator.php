@@ -42,9 +42,7 @@ class PayloadValidator
       $optional = $block->hasTag('optional');
       $val = $this->_payload->$property;
 
-      if(($val === null && ($nullable || $optional))
-        || ($val === '' && $optional)
-      )
+      if(($val === null && ($nullable || $optional)) || ($val === '' && $optional))
       {
         continue;
       }
@@ -67,15 +65,12 @@ class PayloadValidator
             {
               throw $e;
             }
-            else
+            $allValid = false;
+            if(!isset($this->_errors[$property]))
             {
-              $allValid = false;
-              if(!isset($this->_errors[$property]))
-              {
-                $this->_errors[$property] = [];
-              }
-              $this->_errors[$property][] = $e->getMessage();
+              $this->_errors[$property] = [];
             }
+            $this->_errors[$property][] = $e->getMessage();
           }
         }
       }
@@ -183,11 +178,7 @@ class PayloadValidator
         }
         break;
       case 'timestamp':
-        if(!((string)
-          (int)$value === (string)$value
-          && ($value <= PHP_INT_MAX)
-          && ($value >= ~PHP_INT_MAX))
-        )
+        if(!((string)(int)$value === (string)$value && ($value <= PHP_INT_MAX) && ($value >= ~PHP_INT_MAX)))
         {
           $msg = 'is not a valid timestamp';
         }

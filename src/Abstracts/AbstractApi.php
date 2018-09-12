@@ -65,7 +65,7 @@ abstract class AbstractApi extends AbstractDefinable implements ApiInterface
    */
   public function processRequest(ApiRequestInterface $request)
   {
-    return $this->processPreparedRequest($this->prepareRequest($request));
+    return $this->processPreparedRequest($this->prepareRequest($request), $request);
   }
 
   /**
@@ -79,12 +79,13 @@ abstract class AbstractApi extends AbstractDefinable implements ApiInterface
   }
 
   /**
-   * @param PromiseInterface $apiRequest
+   * @param PromiseInterface         $apiRequest
+   *
+   * @param ApiRequestInterface|null $rawRequest
    *
    * @return \Packaged\Api\Interfaces\ApiResponseInterface
-   * @throws \Packaged\Api\Exceptions\InvalidApiResponseException
    */
-  public function processPreparedRequest(PromiseInterface $apiRequest)
+  public function processPreparedRequest(PromiseInterface $apiRequest, ApiRequestInterface $rawRequest = null)
   {
     $time = microtime(true);
     try
@@ -97,9 +98,12 @@ abstract class AbstractApi extends AbstractDefinable implements ApiInterface
     }
 
     $response = $this->_processResponse($response);
-
     $totalTime = microtime(true) - $time;
+    return $this->_format($response, $totalTime, $rawRequest);
+  }
 
+  protected function _format($response, $totalTime = 0, ApiRequestInterface $rawRequest = null)
+  {
     $format = new JsonFormat();
     return $format->decode($response, number_format($totalTime * 1000, 3));
   }

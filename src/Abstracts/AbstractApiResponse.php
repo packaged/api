@@ -29,11 +29,7 @@ abstract class AbstractApiResponse implements ApiResponseInterface
 
   protected function _getProperty($property, $default = null)
   {
-    return Objects::property(
-      $this->_apiCallData->getRawResult(),
-      strtolower($property),
-      $default
-    );
+    return Objects::property($this->_apiCallData->getRawResult(), strtolower($property), $default);
   }
 
   /**
@@ -111,9 +107,6 @@ abstract class AbstractApiResponse implements ApiResponseInterface
     {
       return $this->_getProperty(substr($method, 3), Arrays::first($params));
     }
-    else
-    {
-      throw new \Exception("Method $method is not supported");
-    }
+    throw new \Exception("Method $method is not supported");
   }
 }
