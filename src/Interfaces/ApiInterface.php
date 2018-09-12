@@ -27,11 +27,13 @@ interface ApiInterface extends DefinableInterface
   public function prepareRequest(ApiRequestInterface $request);
 
   /**
-   * @param PromiseInterface $apiRequest
+   * @param PromiseInterface         $apiRequest
+   *
+   * @param ApiRequestInterface|null $rawRequest
    *
    * @return \Packaged\Api\Interfaces\ApiResponseInterface
    */
-  public function processPreparedRequest(PromiseInterface $apiRequest);
+  public function processPreparedRequest(PromiseInterface $apiRequest, ApiRequestInterface $rawRequest = null);
 
   /**
    * Bind this API to an instance

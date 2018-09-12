@@ -28,7 +28,7 @@ class ApiRequest implements ApiRequestInterface
     {
       if($this->_promise)
       {
-        $this->_response = $this->getApi()->processPreparedRequest($this->_promise);
+        $this->_response = $this->getApi()->processPreparedRequest($this->_promise, $this);
       }
       else
       {
