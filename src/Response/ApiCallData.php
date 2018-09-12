@@ -10,18 +10,15 @@ class ApiCallData
   protected $_type;
   protected $_result;
 
-  public static function create(
-    $type, $result, $statusCode, $statusMessage, $totalTime, $executionTime,
-    $callTime
-  )
+  public static function create($type, $result, $statusCode, $statusMessage, $totalTime, $executionTime, $callTime)
   {
-    $callData = new static;
+    $callData = new static();
     $callData->_setStatus($statusCode, $statusMessage);
     $callData->_setRawResult($result);
     $callData->_setResponseType($type);
     $callData->_totalTime = $totalTime;
-    $callData->_execTime  = $executionTime;
-    $callData->_callTime  = $callTime;
+    $callData->_execTime = $executionTime;
+    $callData->_callTime = $callTime;
     return $callData;
   }
 
@@ -38,8 +35,8 @@ class ApiCallData
 
   protected function _setStatus($code, $message = '')
   {
-    $this->_status          = new \stdClass();
-    $this->_status->code    = $code;
+    $this->_status = new \stdClass();
+    $this->_status->code = $code;
     $this->_status->message = $message;
     return $this;
   }
@@ -53,6 +50,19 @@ class ApiCallData
   public function getResponseType()
   {
     return $this->_type;
+  }
+
+  /**
+   * Override response type
+   *
+   * @param $type
+   *
+   * @return $this
+   */
+  public function setResponseType($type)
+  {
+    $this->_type = $type;
+    return $this;
   }
 
   /**
