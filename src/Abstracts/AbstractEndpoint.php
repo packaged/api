@@ -80,7 +80,7 @@ abstract class AbstractEndpoint extends AbstractDefinable
     }
     else if(substr($path, 0, 1) !== '/')
     {
-      $path = Path::buildUnix($this->_path, $path);
+      $path = Path::unix($this->_path, $path);
     }
 
     $path = $this->_buildPath($path, $payload);

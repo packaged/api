@@ -53,7 +53,7 @@ abstract class AbstractApi extends AbstractDefinable implements ApiInterface
    */
   protected function _buildEndpointUrl(EndpointInterface $endpointInterface)
   {
-    return Path::buildUnix($this->getUrl(), $endpointInterface->getPath());
+    return Path::unix($this->getUrl(), $endpointInterface->getPath());
   }
 
   /**
@@ -129,7 +129,7 @@ abstract class AbstractApi extends AbstractDefinable implements ApiInterface
   {
     $promise = $this->_getClient()->requestAsync(
       $request->getVerb(),
-      Path::buildUnix($this->getUrl(), $request->getPath()) . $request->getQueryString(),
+      Path::unix($this->getUrl(), $request->getPath()) . $request->getQueryString(),
       $this->_makeOptions($request)
     );
     $request->setPromise($promise);
