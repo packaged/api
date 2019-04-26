@@ -13,7 +13,7 @@
     "guzzlehttp/guzzle": "~6.3",
     "symfony/serializer": "~3.3",
     "packaged/helpers": "~1.17|~2.0",
-    "packaged/docblock": "~0",
+    "packaged/docblock": "~0|~1",
     "packaged/config": "~1.0"
   },
   "require-dev": {
