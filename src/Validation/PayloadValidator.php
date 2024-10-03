@@ -156,7 +156,8 @@ class PayloadValidator
         }
         break;
       case 'email':
-        if(!filter_var($value, FILTER_VALIDATE_EMAIL))
+        $eml = filter_var($value, FILTER_SANITIZE_EMAIL);
+        if(!$eml || !filter_var($eml, FILTER_VALIDATE_EMAIL))
         {
           $msg = "is not a valid email address";
         }
