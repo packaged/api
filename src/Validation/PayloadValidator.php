@@ -24,7 +24,7 @@ class PayloadValidator
     $this->_repair = $repair;
   }
 
-  public function validate(array $properties = null, $throw = true)
+  public function validate(?array $properties = null, $throw = true)
   {
     $allValid = true;
 

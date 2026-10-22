@@ -19,7 +19,7 @@ abstract class AbstractApiPayload extends AbstractDefinable implements ApiPayloa
     return ArrayHelper::toArray($this);
   }
 
-  public function validate(array $properties = null)
+  public function validate(?array $properties = null)
   {
     return (new PayloadValidator($this))->validate($properties);
   }

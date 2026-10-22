@@ -1,7 +1,9 @@
 <?php
 namespace Packaged\Api\Tests;
 
+use GuzzleHttp\Exception\TransferException;
 use GuzzleHttp\Handler\MockHandler;
+use GuzzleHttp\Psr7\Query;
 use GuzzleHttp\Psr7\Response;
 use Packaged\Api\ApiRequest;
 use Packaged\Api\Format\JsonFormat;
@@ -14,7 +16,6 @@ use Packaged\Api\Tests\Support\MockPayload;
 use Packaged\Api\Tests\Support\MockResponse;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\RequestInterface;
-use function GuzzleHttp\Psr7\parse_query;
 
 class ApiClientTest extends TestCase
 {
@@ -30,7 +31,7 @@ class ApiClientTest extends TestCase
     );
   }
 
-  protected function _getApi($handlerResult, array $headers = null)
+  protected function _getApi($handlerResult, ?array $headers = null)
   {
     if(is_callable($handlerResult))
     {
@@ -80,7 +81,7 @@ class ApiClientTest extends TestCase
     return new MockApi('http://www.test.com', $config);
   }
 
-  protected function _getEndpoint($handlerResult, array $headers = null)
+  protected function _getEndpoint($handlerResult, ?array $headers = null)
   {
     $api = $this->_getApi($handlerResult, $headers);
     return MockEndpoint::bound($api);
@@ -105,7 +106,7 @@ class ApiClientTest extends TestCase
       {
         /** @var RequestInterface $request */
         $body = $request->getBody()->getContents();
-        $params = parse_query($body);
+        $params = Query::parse($body);
         if(!empty($params))
         {
           return [
@@ -153,12 +154,10 @@ class ApiClientTest extends TestCase
     $this->assertEquals([0 => 'val2'], $apiResult->head2);
   }
 
-  /**
-   * @expectedException \GuzzleHttp\Exception\RequestException
-   * @expectedExceptionMessageRegExp /(\[curl\] \(#6\))|(cURL error 6)/
-   */
   public function testInvalidDomain()
   {
+    $this->expectException(TransferException::class);
+    $this->expectExceptionMessageMatches('/cURL error 6/');
     $api = new MockApi('http://invalid.this-domain-does-not-exist.co.test');
     $request = ApiRequest::create()->setApi($api);
     $request->get();
