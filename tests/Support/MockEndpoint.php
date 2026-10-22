@@ -17,7 +17,7 @@ class MockEndpoint extends AbstractEndpoint
   }
 
   public function getRequest(
-    ApiPayloadInterface $payload = null, $path = '/', $verb = null
+    ?ApiPayloadInterface $payload = null, $path = '/', $verb = null
   )
   {
     return $this->_createRequest($payload, $path, $verb);

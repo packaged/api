@@ -55,7 +55,7 @@ abstract class AbstractEndpoint extends AbstractDefinable
    *
    * @return mixed
    */
-  protected function _buildPath($path, ApiPayloadInterface $payload = null)
+  protected function _buildPath($path, ?ApiPayloadInterface $payload = null)
   {
     if(stristr($path, ':') && $payload !== null)
     {
@@ -72,7 +72,7 @@ abstract class AbstractEndpoint extends AbstractDefinable
    *
    * @return ApiRequest
    */
-  protected function _createRequest(ApiPayloadInterface $payload = null, $path = null, $verb = null)
+  protected function _createRequest(?ApiPayloadInterface $payload = null, $path = null, $verb = null)
   {
     if($path === null)
     {

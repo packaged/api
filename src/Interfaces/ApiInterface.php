@@ -33,7 +33,7 @@ interface ApiInterface extends DefinableInterface
    *
    * @return \Packaged\Api\Interfaces\ApiResponseInterface
    */
-  public function processPreparedRequest(PromiseInterface $apiRequest, ApiRequestInterface $rawRequest = null);
+  public function processPreparedRequest(PromiseInterface $apiRequest, ?ApiRequestInterface $rawRequest = null);
 
   /**
    * Bind this API to an instance

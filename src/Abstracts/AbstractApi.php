@@ -85,7 +85,7 @@ abstract class AbstractApi extends AbstractDefinable implements ApiInterface
    *
    * @return \Packaged\Api\Interfaces\ApiResponseInterface
    */
-  public function processPreparedRequest(PromiseInterface $apiRequest, ApiRequestInterface $rawRequest = null)
+  public function processPreparedRequest(PromiseInterface $apiRequest, ?ApiRequestInterface $rawRequest = null)
   {
     $time = microtime(true);
     try
@@ -102,7 +102,7 @@ abstract class AbstractApi extends AbstractDefinable implements ApiInterface
     return $this->_format($response, $totalTime, $rawRequest);
   }
 
-  protected function _format($response, $totalTime = 0, ApiRequestInterface $rawRequest = null)
+  protected function _format($response, $totalTime = 0, ?ApiRequestInterface $rawRequest = null)
   {
     $format = new JsonFormat();
     return $format->decode($response, number_format($totalTime * 1000, 3));
